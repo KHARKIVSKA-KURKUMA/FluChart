@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
   LineChart,
   Line,
@@ -7,19 +8,29 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import styled from "styled-components";
+
+const Headline = styled.h2`
+  text-align: center;
+  margin-bottom: 10px;
+`;
 
 const GeneralChart = ({ selectedData }) => {
   return (
     <>
-      <ResponsiveContainer width="100%" height={300}>
+      <Headline>Загальна кількість хворих</Headline>
+      <ResponsiveContainer width="100%" height={500}>
         <LineChart data={selectedData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="week"
-            label={{ value: "Тиждень", position: "insideBottom", offset: -5 }}
+            label={{ position: "insideBottom", offset: -5 }}
           />
           <YAxis
-            label={{ value: "Випадки", angle: -90, position: "insideLeft" }}
+            label={{
+              angle: -90,
+              position: "insideLeft",
+            }}
           />
           <Tooltip />
           <Line
@@ -32,6 +43,15 @@ const GeneralChart = ({ selectedData }) => {
       </ResponsiveContainer>
     </>
   );
+};
+
+GeneralChart.propTypes = {
+  selectedData: PropTypes.arrayOf(
+    PropTypes.shape({
+      week: PropTypes.number.isRequired,
+      inRate: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };
 
 export default GeneralChart;

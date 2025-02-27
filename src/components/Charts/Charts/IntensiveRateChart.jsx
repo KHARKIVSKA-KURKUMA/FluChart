@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import {
   LineChart,
   Line,
@@ -9,12 +9,18 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
+import styled from "styled-components";
+
+const Headline = styled.h2`
+  text-align: center;
+  margin-bottom: 10px;
+`;
 
 const IntensiveRate = ({ selectedData }) => {
   return (
     <>
-      <h2>Інтенсивний показник захворюваності</h2>
-      <ResponsiveContainer width="100%" height={300}>
+      <Headline>Інтенсивний показник захворюваності</Headline>
+      <ResponsiveContainer width="100%" height={500}>
         <LineChart data={selectedData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="week" />
@@ -24,6 +30,7 @@ const IntensiveRate = ({ selectedData }) => {
               angle: -90,
               position: "insideLeft",
             }}
+            domain={[0, 1000]}
           />
           <Tooltip />
           <Line
@@ -36,7 +43,7 @@ const IntensiveRate = ({ selectedData }) => {
             y={518.68}
             stroke="blue"
             strokeDasharray="3 3"
-            label="Базовий поріг"
+            label="Епідемічний поріг"
           />
           <ReferenceLine
             y={649.71}
@@ -48,18 +55,27 @@ const IntensiveRate = ({ selectedData }) => {
             y={845.25}
             stroke="orange"
             strokeDasharray="3 3"
-            label="Високий рівень"
+            label="Високий підйом"
           />
           <ReferenceLine
             y={921.59}
             stroke="red"
             strokeDasharray="3 3"
-            label="Дуже високий рівень"
+            label="Дуже високий підйом"
           />
         </LineChart>
       </ResponsiveContainer>
     </>
   );
+};
+
+IntensiveRate.propTypes = {
+  selectedData: PropTypes.arrayOf(
+    PropTypes.shape({
+      week: PropTypes.number.isRequired,
+      inRate: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };
 
 export default IntensiveRate;

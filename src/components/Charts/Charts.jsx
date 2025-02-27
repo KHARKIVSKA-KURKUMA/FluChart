@@ -25,7 +25,10 @@ const Charts = () => {
 
   return (
     <>
-      <Headline>Статистика захворюваності на грип та ГРВІ в Україні</Headline>
+      <Headline>
+        Статистика захворюваності на грип та ГРВІ в Україні за {selectedYear}{" "}
+        рік
+      </Headline>
       <FormContainer>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id="demo-simple-select-label">Оберіть рік:</InputLabel>
