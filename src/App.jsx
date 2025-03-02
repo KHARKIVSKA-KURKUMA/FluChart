@@ -1,15 +1,21 @@
-import styled from "styled-components";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GlobalStyle } from "./GlobalStyles";
-import ChartPage from "./pages/ChartPage";
-
-const Container = styled.div``;
+import { ChartPage, ForecastPage, HomePage } from "./pages";
 
 function App() {
   return (
-    <Container>
+    <>
       <GlobalStyle />
-      <ChartPage />
-    </Container>
+      <BrowserRouter basename={import.meta.env.DEV ? "/" : "/FluChart/"}>
+        <Routes>
+          <Route path="/">
+            <Route index element={<HomePage />} />
+            <Route path="/stats" element={<ChartPage />} />
+            <Route path="/forecast" element={<ForecastPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

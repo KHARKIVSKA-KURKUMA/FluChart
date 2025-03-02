@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Headline = styled.h1`
+const Headline = styled.h2`
   text-align: center;
   margin-bottom: 20px;
 `;
