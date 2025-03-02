@@ -1,12 +1,10 @@
-import { Link } from "react-router-dom";
+import Home from "../components/Home/Home";
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>ГРВІ в Україні</h1>
-      <Link to="stats">Статистика захворюваності</Link>
-      <Link to="forecast">Статистика захворюваності</Link>
-    </div>
+    <>
+      <Home />
+    </>
   );
 };
 

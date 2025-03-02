@@ -1,7 +1,11 @@
-import React from "react";
+import BackButton from "../components/BackButton/BackButton";
 
 const ForecastPage = () => {
-  return <div>Forecast</div>;
+  return (
+    <div>
+      <BackButton />
+    </div>
+  );
 };
 
 export default ForecastPage;

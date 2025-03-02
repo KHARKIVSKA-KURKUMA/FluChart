@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 const Headline = styled.h2`
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  font-family: "Caveat", cursive;
+  font-size: 56px;
 `;
 
 const ChartsList = styled.ul`
