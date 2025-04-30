@@ -34,7 +34,7 @@ const FluTrendChart = () => {
   const [stats, setStats] = useState({ min: 0, max: 0, avg: 0 });
 
   useEffect(() => {
-    fetch("../../../data/fluStats.json") // Замініть шлях на актуальний
+    fetch("../../../data/fluStats.json")
       .then((res) => res.json())
       .then((jsonData) => {
         const formattedData = {};
