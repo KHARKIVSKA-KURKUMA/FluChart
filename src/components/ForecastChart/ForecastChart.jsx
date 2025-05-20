@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import Papa from "papaparse";
 import { parse, startOfISOWeek, format } from "date-fns";
 import styled from "styled-components";
+import forecastJson from "../../../data/flu_forecast.json";
+import realJson from "../../../data/fluStats.json";
 
 import {
   LineChart,
@@ -27,49 +28,29 @@ const ForecastChart = () => {
   const [realData, setRealData] = useState([]);
 
   useEffect(() => {
-    fetch("../../../data/flu_forecast.csv")
-      .then((response) => response.text())
-      .then((csvText) => {
-        Papa.parse(csvText, {
-          header: true,
-          skipEmptyLines: true,
-          complete: (results) => {
-            const parsedForecast = results.data
-              .filter((item) => item.yhat && !isNaN(item.yhat))
-              .map((item) => ({
-                date: item.ds,
-                yhat: parseFloat(item.yhat),
-              }));
-            setForecastData(parsedForecast);
-          },
-        });
-      })
-      .catch((error) => {
-        console.error("❌ Error loading forecast CSV:", error);
-      });
+    const parsedForecast = forecastJson
+      .filter((item) => item.yhat && !isNaN(item.yhat))
+      .map((item) => ({
+        date: item.ds.slice(0, 10),
+        yhat: parseFloat(item.yhat),
+      }));
+    setForecastData(parsedForecast);
 
-    fetch("../../../data/fluStats.json")
-      .then((response) => response.json())
-      .then((json) => {
-        const parsedReal = json.years.flatMap((yearBlock) =>
-          yearBlock.data.map((entry) => {
-            const isoWeekStr = `${yearBlock.year}-W${entry.week
-              .toString()
-              .padStart(2, "0")}`;
-            const weekStart = startOfISOWeek(
-              parse(isoWeekStr, "RRRR-'W'II", new Date())
-            );
-            return {
-              date: format(weekStart, "yyyy-MM-dd"),
-              real: entry.cases,
-            };
-          })
+    const parsedReal = realJson.years.flatMap((yearBlock) =>
+      yearBlock.data.map((entry) => {
+        const isoWeekStr = `${yearBlock.year}-W${entry.week
+          .toString()
+          .padStart(2, "0")}`;
+        const weekStart = startOfISOWeek(
+          parse(isoWeekStr, "RRRR-'W'II", new Date())
         );
-        setRealData(parsedReal);
+        return {
+          date: format(weekStart, "yyyy-MM-dd"),
+          real: entry.cases,
+        };
       })
-      .catch((error) => {
-        console.error("❌ Error loading real JSON data:", error);
-      });
+    );
+    setRealData(parsedReal);
   }, []);
 
   const mergedData = forecastData.map((forecast) => {
@@ -90,10 +71,7 @@ const ForecastChart = () => {
             <XAxis
               dataKey="date"
               tick={{ fontSize: 10 }}
-              tickFormatter={(dateStr) => {
-                const year = dateStr.slice(0, 4);
-                return year;
-              }}
+              tickFormatter={(dateStr) => dateStr.slice(0, 4)}
             />
             <YAxis />
             <Tooltip />
