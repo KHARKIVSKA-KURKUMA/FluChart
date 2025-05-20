@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   LineChart,
@@ -10,23 +10,9 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import styled from "styled-components";
+import { Headline, Descr, trendColors } from "./FluTrendChart.styled";
 
-const Headline = styled.h2`
-  text-align: center;
-  margin-bottom: 10px;
-  font-family: "Caveat", cursive;
-  font-size: 36px;
-`;
-
-const colors = [
-  "#8884d8",
-  "#82ca9d",
-  "#ffc658",
-  "#ff7300",
-  "#ff0000",
-  "#00c49f",
-];
+import fluStats from "../../../data/fluStats.json";
 
 const FluTrendChart = () => {
   const [data, setData] = useState([]);
@@ -34,44 +20,38 @@ const FluTrendChart = () => {
   const [stats, setStats] = useState({ min: 0, max: 0, avg: 0 });
 
   useEffect(() => {
-    fetch("../../../data/fluStats.json")
-      .then((res) => res.json())
-      .then((jsonData) => {
-        const formattedData = {};
-        const allCases = [];
-        const yearSet = new Set();
+    const formattedData = {};
+    const allCases = [];
+    const yearSet = new Set();
 
-        jsonData.years.forEach((yearData) => {
-          yearSet.add(yearData.year);
-          yearData.data.forEach((weekData) => {
-            const weekKey = `W${weekData.week}`;
-            if (!formattedData[weekKey]) {
-              formattedData[weekKey] = { week: weekData.week };
-            }
-            formattedData[weekKey][yearData.year] = weekData.cases;
-            allCases.push(weekData.cases);
-          });
-        });
-
-        setData(Object.values(formattedData));
-        setYears(Array.from(yearSet).sort());
-        setStats({
-          min: Math.min(...allCases),
-          max: Math.max(...allCases),
-          avg: Math.round(
-            allCases.reduce((a, b) => a + b, 0) / allCases.length
-          ),
-        });
+    fluStats.years.forEach((yearData) => {
+      yearSet.add(yearData.year);
+      yearData.data.forEach((weekData) => {
+        const weekKey = `W${weekData.week}`;
+        if (!formattedData[weekKey]) {
+          formattedData[weekKey] = { week: weekData.week };
+        }
+        formattedData[weekKey][yearData.year] = weekData.cases;
+        allCases.push(weekData.cases);
       });
+    });
+
+    setData(Object.values(formattedData));
+    setYears(Array.from(yearSet).sort());
+    setStats({
+      min: Math.min(...allCases),
+      max: Math.max(...allCases),
+      avg: Math.round(allCases.reduce((a, b) => a + b, 0) / allCases.length),
+    });
   }, []);
 
   return (
     <>
       <Headline>Загальна кількість хворих</Headline>
-      <p style={{ textAlign: "center" }}>
+      <Descr>
         📉 Мінімум: {stats.min} | 📈 Максимум: {stats.max} | 📊 Середнє:{" "}
         {stats.avg}
-      </p>
+      </Descr>
       <ResponsiveContainer width="100%" height={500}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -88,7 +68,7 @@ const FluTrendChart = () => {
               key={year}
               type="monotone"
               dataKey={year}
-              stroke={colors[index % colors.length]}
+              stroke={trendColors[index % trendColors.length]}
               strokeWidth={2}
             />
           ))}
