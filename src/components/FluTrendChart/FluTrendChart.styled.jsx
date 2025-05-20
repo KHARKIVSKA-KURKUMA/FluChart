@@ -4,7 +4,7 @@ const Headline = styled.h2`
   text-align: center;
   margin-bottom: 10px;
   font-family: "Caveat", cursive;
-  font-size: 36px;
+  font-size: 46px;
 `;
 
 const Descr = styled.p`

@@ -1,28 +1,43 @@
 import styled from "styled-components";
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 140px;
+`;
+
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
-  font-size: 0.95rem;
+  margin-top: 20px;
+  font-size: 18px;
+  border: 2px solid #efefef;
 `;
 
 const Th = styled.th`
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-bottom: 2px solid #ccc;
-  text-align: left;
-  cursor: help;
+  padding: 20px;
+  background-color: #c599b6;
+  text-align: center;
+  color: #410445;
+  font-size: 20px;
+  border: 1px solid #efefef;
 `;
 
 const Td = styled.td`
   padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
+  border: 1px solid #efefef;
+  text-align: center;
+  color: #410445;
+  font-size: 20px;
 `;
 
 const Tr = styled.tr`
+  &:nth-child(odd) {
+    background-color: #e6b2ba;
+  }
   &:nth-child(even) {
-    background-color: #fafafa;
+    background-color: #fad0c4;
   }
 `;
 
@@ -33,4 +48,4 @@ const Headline = styled.h2`
   font-size: 36px;
 `;
 
-export { Table, Td, Th, Tr, Headline };
+export { Table, Td, Th, Tr, Headline, Container };

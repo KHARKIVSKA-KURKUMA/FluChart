@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Table, Td, Th, Tr, Headline } from "./ForecastMetrics.styled";
+import {
+  Table,
+  Td,
+  Th,
+  Tr,
+  Headline,
+  Container,
+} from "./ForecastMetrics.styled";
 
 const ForecastMetrics = ({ forecastData, realData }) => {
   const [metricsByYear, setMetricsByYear] = useState([]);
@@ -47,7 +54,7 @@ const ForecastMetrics = ({ forecastData, realData }) => {
   }, [forecastData, realData]);
 
   return (
-    <div>
+    <Container>
       <Headline>Оцінки точності моделі прогнозування по кожному року</Headline>
       <Table>
         <thead>
@@ -79,7 +86,7 @@ const ForecastMetrics = ({ forecastData, realData }) => {
           ))}
         </tbody>
       </Table>
-    </div>
+    </Container>
   );
 };
 

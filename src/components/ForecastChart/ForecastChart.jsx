@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 import { parse, startOfISOWeek, format } from "date-fns";
-import styled from "styled-components";
-import forecastJson from "../../../data/flu_forecast.json";
-import realJson from "../../../data/fluStats.json";
-
 import {
   LineChart,
   Line,
@@ -14,14 +10,11 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import forecastJson from "../../../data/flu_forecast.json";
+import realJson from "../../../data/fluStats.json";
 import ForecastMetrics from "./ForecastMetrics/ForecastMetrics";
-
-const Headline = styled.h2`
-  text-align: center;
-  margin-bottom: 10px;
-  font-family: "Caveat", cursive;
-  font-size: 36px;
-`;
+import { Headline, ForecastContainer } from "./ForecastChart.styled";
+import Loader from "../Loader/Loader";
 
 const ForecastChart = () => {
   const [forecastData, setForecastData] = useState([]);
@@ -62,46 +55,46 @@ const ForecastChart = () => {
   });
 
   return (
-    <div style={{ width: "100%", height: "500px" }}>
+    <>
       <Headline>Прогноз захворюваності на 2025 рік</Headline>
       {forecastData.length > 0 ? (
-        <ResponsiveContainer>
-          <LineChart data={mergedData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey="date"
-              tick={{ fontSize: 10 }}
-              tickFormatter={(dateStr) => dateStr.slice(0, 4)}
-            />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="yhat"
-              stroke="#1a1ef7"
-              strokeWidth={2}
-              dot={false}
-              name="Прогноз"
-            />
-            <Line
-              type="monotone"
-              dataKey="real"
-              stroke="#f11990"
-              strokeWidth={2}
-              dot={false}
-              name="Фактичні дані"
-              connectNulls={true}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <ForecastContainer>
+          <ResponsiveContainer>
+            <LineChart data={mergedData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="date"
+                tick={{ fontSize: 10 }}
+                tickFormatter={(dateStr) => dateStr.slice(0, 4)}
+              />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="yhat"
+                stroke="#1a1ef7"
+                strokeWidth={2}
+                dot={false}
+                name="Прогноз"
+              />
+              <Line
+                type="monotone"
+                dataKey="real"
+                stroke="#f11990"
+                strokeWidth={2}
+                dot={false}
+                name="Фактичні дані"
+                connectNulls={true}
+              />
+            </LineChart>
+          </ResponsiveContainer>{" "}
+        </ForecastContainer>
       ) : (
-        <p style={{ textAlign: "center", marginTop: "2rem" }}>
-          Завантаження даних...
-        </p>
+        <Loader />
       )}
       <ForecastMetrics forecastData={forecastData} realData={realData} />
-    </div>
+    </>
   );
 };
 
