@@ -20,7 +20,7 @@ const Headline = styled.h2`
 const GeneralChart = ({ selectedData }) => {
   return (
     <>
-      <Headline>Загальна кількість хворих</Headline>
+      <Headline>Кількість хворих</Headline>
       <ResponsiveContainer width="100%" height={500}>
         <LineChart data={selectedData}>
           <CartesianGrid strokeDasharray="3 3" />
